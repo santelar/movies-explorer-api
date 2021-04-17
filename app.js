@@ -21,6 +21,8 @@ mongoose.connect('mongodb://localhost:27017/bestfilmsdb', {
 })
   .then(() => console.log('Congratulations!!!'));
 
+app.use(apiLogger);
+app.use(errLogger);
 app.use(cors());
 app.use(helmet());
 app.use(bodyParser.json());
@@ -31,8 +33,6 @@ app.use(() => {
   throw new NotFoundError('Страница не найдена');
 });
 
-app.use(apiLogger);
-app.use(errLogger);
 app.use(errors());
 app.use(serverError);
 app.use(limiter);
