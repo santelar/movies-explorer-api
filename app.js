@@ -31,11 +31,11 @@ app.use(() => {
   throw new NotFoundError('Страница не найдена');
 });
 
-app.use(limiter);
 app.use(apiLogger);
 app.use(errLogger);
 app.use(errors());
 app.use(serverError);
+app.use(limiter);
 
 app.listen(PORT, () => {
   console.log(`Mesto-project start on port ${PORT}`);
