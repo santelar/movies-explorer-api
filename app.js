@@ -8,7 +8,6 @@ const { errors } = require('celebrate');
 const { limiter } = require('./utils/rateLimiter');
 const { apiLogger, errLogger } = require('./middlewares/logger');
 const routes = require('./routes/index');
-const NotFoundError = require('./errors/404-notFoundError');
 const serverError = require('./errors/500-serverError');
 
 const { PORT = 3000 } = process.env;
@@ -29,9 +28,6 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use('/', routes);
-app.use(() => {
-  throw new NotFoundError('Страница не найдена');
-});
 
 app.use(errors());
 app.use(serverError);
