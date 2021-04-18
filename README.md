@@ -2,4 +2,4 @@
 
 ## Бэкенд дипломной работы на курсе Яндекс.Практикум.
 
-### api.a.ponomarenko.nomoredomains.club
+### https://api.a.ponomarenko.nomoredomains.club/
