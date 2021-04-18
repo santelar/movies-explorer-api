@@ -12,7 +12,7 @@ router.post('/signin', validateSignin, loginUser);
 router.use('/users', auth, users);
 router.use('/movies', auth, movies);
 
-router.use(() => {
+router.all('/*', auth, () => {
   throw new NotFoundError('Страница не найдена');
 });
 
