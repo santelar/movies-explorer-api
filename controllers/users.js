@@ -42,12 +42,12 @@ const loginUser = (req, res, next) => {
   User.findOne({ email }).select('+password')
     .then((user) => {
       if (!user) {
-        throw new AuthError('Требуется авторизация!');
+        throw new AuthError('Требуется авторизация! Введите корректные email и пароль');
       }
       return bcrypt.compare(password, user.password)
         .then((matched) => {
           if (!matched) {
-            throw new AuthError('Требуется авторизация!');
+            throw new AuthError('Требуется авторизация! Введите корректные email и пароль');
           }
           return user;
         });

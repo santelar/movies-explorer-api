@@ -30,7 +30,7 @@ const movieSchema = new mongoose.Schema({
       validator(v) {
         return regex.test(v);
       },
-      message: 'Некорректный адрес',
+      message: 'Некорректный адрес изображения',
     },
   },
   trailer: {
@@ -40,7 +40,7 @@ const movieSchema = new mongoose.Schema({
       validator(v) {
         return regex.test(v);
       },
-      message: 'Некорректный адрес',
+      message: 'Некорректный адрес трейлера',
     },
   },
   thumbnail: {
@@ -50,7 +50,7 @@ const movieSchema = new mongoose.Schema({
       validator(v) {
         return regex.test(v);
       },
-      message: 'Некорректный адрес',
+      message: 'Некорректный адрес изображения',
     },
   },
   owner: {
@@ -60,7 +60,7 @@ const movieSchema = new mongoose.Schema({
     select: false,
   },
   movieId: {
-    type: mongoose.Schema.Types.ObjectId,
+    type: Number,
     required: true,
     ref: 'movie',
   },

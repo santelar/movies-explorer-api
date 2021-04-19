@@ -6,7 +6,7 @@ const ConflictError = require('../errors/409-conflictError');
 
 const getMovies = (req, res, next) => {
   Movie.find({ owner: req.user._id })
-    .then((movies) => res.status(200).send(movies))
+    .then((movies) => res.send(movies))
     .catch((err) => next(err));
 };
 
@@ -56,27 +56,25 @@ const createMovie = (req, res, next) => {
 };
 
 const deleteMovie = (req, res, next) => {
+  const owner = req.user._id;
   Movie
-    .findById(req.params.movieId)
+    .findById({ _id: req.params.movieId }).select('+owner')
+    .orFail(() => new NotFoundError('Данный фильм не найден'))
+    .then((movie) => {
+      if (!movie.owner.equals(owner)) {
+        next(new ForbiddenError('У вас нет прав на удаление этого фильма'));
+      } else {
+        Movie.deleteOne(movie)
+          .then(() => res.send({ message: `Фильм удален - ${movie.nameRU}, ${movie.year}` }));
+      }
+    })
     .catch((err) => {
       if (err.kind === 'ObjectId') {
-        throw new ValidationError('Невалидный id фильма');
+        next(new ValidationError('Некорректный id фильма'));
+      } else {
+        next(err);
       }
-      return next(err);
-    })
-    .then((movie) => {
-      if (!movie) {
-        throw new NotFoundError('Фильм не найден');
-      }
-      if (movie.owner.toString() !== req.user._id) {
-        throw new ForbiddenError('Нет прав на удаление этого фильма');
-      }
-      return Movie.findByIdAndRemove(req.params.movieId)
-        .then((m) => {
-          res.send({ message: `${'Фильм'} '${m.nameRU}' ${'удален'}` });
-        });
-    })
-    .catch(next);
+    });
 };
 
 module.exports = {
