@@ -75,7 +75,7 @@ const getMyProfile = (req, res, next) => {
       if (!user) {
         throw new NotFoundError('Пользователь не найден');
       }
-      res.status(200).send({ email: user.email, name: user.name });
+      res.status(200).send({ data: user });
     })
     .catch((err) => next(err));
 };
@@ -97,7 +97,7 @@ const updateProfile = (req, res, next) => {
       if (!user) {
         throw new NotFoundError('Пользователь не найден');
       }
-      res.status(200).send(user);
+      res.status(200).send({ data: user });
     })
     .catch((err) => next(err));
 };
